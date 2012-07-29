@@ -77,7 +77,7 @@
     if (self != nil) {
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
         [notificationCenter addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-        [notificationCenter addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardDidHideNotification object:nil];
+        [notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     }
     
     return self;
@@ -107,16 +107,14 @@
 {
     _visible = NO;
     
-    CGRect keyboardRect;
     NSTimeInterval timeInterval;
     UIViewAnimationCurve *viewAnimationCurve;
     
-    [[notification userInfo][UIKeyboardFrameEndUserInfoKey] getValue:&keyboardRect];
     [[notification userInfo][UIKeyboardAnimationDurationUserInfoKey] getValue:&timeInterval];
     [[notification userInfo][UIKeyboardAnimationCurveUserInfoKey] getValue:&viewAnimationCurve];
     
     if (visibilityDidUpdateBlock) {
-        visibilityDidUpdateBlock(_visible, keyboardRect.size, timeInterval, viewAnimationCurve);
+        visibilityDidUpdateBlock(_visible, CGSizeZero, timeInterval, viewAnimationCurve);
     }
 }
 
