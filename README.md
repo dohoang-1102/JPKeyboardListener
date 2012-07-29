@@ -5,11 +5,12 @@ A simple static class for keeping track for that pesky keyboard!
 
 ### Usage
 
-Using JPKeyboardListener is easy! Simply add `#import "JPKeyboardListener.h"` inside your `AppDelegate`. 
+Using JPKeyboardListener is easy! Simply add `#import "JPKeyboardListener.h"` with all of the other `#import`s inside your `AppDelegate`. 
 
 Then inside your 
 
 `- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions` 
+
 add the following line above `return YES`:
 
 `[JPKeyboardListener sharedListener];`
