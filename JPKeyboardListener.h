@@ -57,7 +57,7 @@
 
 @interface JPKeyboardListener : NSObject
 
-typedef void(^JPKeyboardVisibilityDidUpdateBlock)(BOOL visible, CGSize keyboardSize, NSTimeInterval animationDuration, UIViewAnimationCurve *animationCurve);
+typedef void(^JPKeyboardVisibilityDidUpdateBlock)(BOOL visible, CGRect keyboardRect, NSTimeInterval animationDuration, UIViewAnimationCurve animationCurve);
 
 + (id)sharedListener;
 
