@@ -58,6 +58,7 @@
 @implementation JPKeyboardListener
 
 @synthesize visible = _visible;
+@synthesize visibilityDidUpdateBlock;
 
 + (id)sharedListener
 {
@@ -88,11 +89,35 @@
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     _visible = YES;
+    
+    CGRect keyboardRect;
+    NSTimeInterval timeInterval;
+    UIViewAnimationCurve *viewAnimationCurve;
+    
+    [[notification userInfo][UIKeyboardFrameEndUserInfoKey] getValue:&keyboardRect];
+    [[notification userInfo][UIKeyboardAnimationDurationUserInfoKey] getValue:&timeInterval];
+    [[notification userInfo][UIKeyboardAnimationCurveUserInfoKey] getValue:&viewAnimationCurve];
+    
+    if (visibilityDidUpdateBlock) {
+        visibilityDidUpdateBlock(_visible, keyboardRect.size, timeInterval, viewAnimationCurve);
+    }
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification
 {
     _visible = NO;
+    
+    CGRect keyboardRect;
+    NSTimeInterval timeInterval;
+    UIViewAnimationCurve *viewAnimationCurve;
+    
+    [[notification userInfo][UIKeyboardFrameEndUserInfoKey] getValue:&keyboardRect];
+    [[notification userInfo][UIKeyboardAnimationDurationUserInfoKey] getValue:&timeInterval];
+    [[notification userInfo][UIKeyboardAnimationCurveUserInfoKey] getValue:&viewAnimationCurve];
+    
+    if (visibilityDidUpdateBlock) {
+        visibilityDidUpdateBlock(_visible, keyboardRect.size, timeInterval, viewAnimationCurve);
+    }
 }
 
 
@@ -109,6 +134,11 @@
 #if !__has_feature(objc_arc)
 - (void)dealloc
 {
+    [super dealloc];
+    
+    keyboardDidHideBlock = nil;
+    keyboardDidShowBlock = nil;
+    
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self];
 }
